@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="mx-24 mt-10 bg-black text-white flex flex-col">
+    <nav
+      class="flex justify-around content-center h-12 w-full bg-gray-700 rounded-lg"
+    >
+      <section class="flex mt-2 justify-center content-center">
+        <div>Logo</div>
+        <p class="ml-2 font-semibold items-stretch">Thunder EV-Token</p>
+      </section>
+      <button
+        id="button"
+        class="flex mt-2 h-8 w-48 justify-center content-center font-semibold bg-yellow-500 rounded-lg"
+      >
+        connect wallet
+      </button>
+      <script>
+        document.getElementById("button").addEventListener("click", (event) => {
+          let account;
+          let button = event.target;
+          ethereum
+            .request({ method: "eth_requestAccounts" })
+            .then((accounts) => {
+              account = accounts[0];
+              console.log(account);
+              button.textContent = account;
+
+              ethereum
+                .request({
+                  method: "eth_getBalance",
+                  params: [account, "latest"],
+                })
+                .then((result) => {
+                  console.log(result);
+                  let wei = parseInt(result, 16);
+                  let balance = wei / 10 ** 18;
+                  console.log(balance + " ETH");
+                });
+            });
+        });
+      </script>
+    </nav>
+    <main class="flex flex-col">
+      <p class="">
+        <span class="text-yellow-400">Participate</span> in the
+        <span class="text-yellow-400">Thunder-EV lottery</span> and
+        <span class="text-yellow-400">win up to 1,000 USD</span>
+      </p>
+    </main>
+    <section class="flex flex-col bg-slate-500 h-52 w-full">
+      <p>Fill in the details below to reveive the tickets</p>
+      <input type="email" name="Fill in your email" class="bg-slate-400" />
+    </section>
+  </body>
+</html>
